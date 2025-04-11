@@ -1,16 +1,28 @@
-let sumButton = document.createElement("button");
-sumButton.innerHTML = "Get Total Price"
-document.body.appendChild(sumButton);
-
-const getSum = () => {
-	const priceAll = document.querySelectorAll(".price");
+function calculateTotal() {
+	const priceElements = document.querySelectorAll(".prices");
 	let total = 0;
 
-	for (let i = 0; i < priceAll.length; i++) {
-		const price = parseFloat(priceAll[i].textContent) || 0;
-		total += price;
-	}
-	document.getElementById("text").innerHTML = `${total}`
-};
+	priceElements.forEach(cell => {
+		let value = parseFloat(cell.textContent) || 0;
+		total += value;
+	});
 
-sumButton.addEventListener("click", getSum);
+	// Remove previous total row if it exists
+	const table = document.getElementById("grocery-table");
+	const existingTotalRow = document.getElementById("total-row");
+	if (existingTotalRow) {
+		table.removeChild(existingTotalRow);
+	}
+
+	// Create a new row for the total
+	const totalRow = document.createElement("tr");
+	totalRow.id = "total-row";
+
+	const totalCell = document.createElement("td");
+	totalCell.colSpan = 2;
+	totalCell.style.fontWeight = "bold";
+	totalCell.textContent = `Total Price = ₹${total}`;
+
+	totalRow.appendChild(totalCell);
+	table.appendChild(totalRow);
+}
